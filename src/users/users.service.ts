@@ -4,11 +4,25 @@ import { Injectable } from '@nestjs/common';
 export class UsersService {
   create(email: string, password: string, name: string) {
     console.log(`email: ${email}, name: ${name}, password: ${password}`);
+    return {
+      id: 1,
+      email: 'tfgteles@gmail.com',
+      name: 'Tiago',
+    };
   }
 
   find() {
     return [
-      { id: 1, email: 'tfgteles@gmail.com', password: 'abc123', name: 'Tiago' },
+      {
+        id: 1,
+        email: 'tfgteles@gmail.com',
+        name: 'Tiago',
+      },
+      {
+        id: 2,
+        email: 'jussaramoreirac@gmail.com',
+        name: 'Jussara Teles',
+      },
     ];
   }
 
@@ -25,7 +39,6 @@ export class UsersService {
     return {
       id: 1,
       email,
-      password: 'abc123',
       name: 'Tiago',
     };
   }
