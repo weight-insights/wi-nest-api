@@ -1,10 +1,6 @@
 # wi-nest-api
 Weight Insights Backend - NestJs
 
-## Mongo DB
-username: weight-insight
-password: x8v5k6sRdkIkA34c
-
 ## Firestore Database
 docs: https://firebase.google.com/docs/firestore/
 
