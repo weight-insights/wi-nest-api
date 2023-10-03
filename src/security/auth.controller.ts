@@ -1,30 +1,44 @@
-import { Body, Controller, Post, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  Session, UseGuards
+} from "@nestjs/common";
 import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { SignInDto } from './dtos/sign-in.dto';
+import { AuthGuard } from "./auth.guard";
 
-@Controller('api')
+@Controller('api/v1/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/v1/auth/signup')
-  async singup(@Body() body: CreateUserDto, @Session() session: any) {
+  @Post('/sign-up')
+  async singUp(@Body() body: SignInDto, @Session() session: any) {
     const user = await this.authService.signup(body.email, body.password);
     session.userId = user.id;
     session.email = user.email;
     return user;
   }
 
-  @Post('/v1/auth/signin')
-  async singin(@Body() body: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signin(body.email, body.password);
-    session.userId = user.id;
-    session.email = user.email;
-    return user;
+  @HttpCode(HttpStatus.OK)
+  @Post('/sign-in')
+  singIn(@Body() body: SignInDto) {
+    const accessToken = this.authService.signIn(body.email, body.password);
+    return accessToken;
   }
 
-  @Post('/v1/auth/signout')
-  async signout(@Session() session: any) {
-    session.userId = null;
-    session.email = null;
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
+
+  @Post('/sign-out')
+  async signOut() {
+    return { status: 'in progress'};
   }
 }

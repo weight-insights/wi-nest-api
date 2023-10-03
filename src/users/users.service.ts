@@ -4,39 +4,37 @@ import { User } from './user.entity';
 @Injectable()
 export class UsersService {
   // TODO delete this method after db implementation
-  getFakeDb() {
-    return [
-      {
-        id: 1,
-        email: 'tfgteles@gmail.com',
-        name: 'Tiago',
-        password: 'abc123',
-      },
-      {
-        id: 2,
-        email: 'jussaramoreirac@gmail.com',
-        name: 'Jussara Teles',
-        password: 'abc123',
-      },
-    ];
+  private readonly users = [
+    {
+      userId: '1234a',
+      email: 'tfgteles@gmail.com',
+      name: 'Tiago',
+      password: 'abc123',
+    },
+    {
+      userId: '1234b',
+      email: 'jussaramoreirac@gmail.com',
+      name: 'Jussara Teles',
+      password: 'abc123',
+    },
+  ];
+
+  // async create(email: string, password: string, name: string) {
+  //   return {
+  //     id: 3,
+  //     email,
+  //     name,
+  //     password,
+  //   };
+  // }
+
+  async find(query: string): Promise<User[]> {
+    const users = this.users.filter((user) => user.name.includes(query));
+    return users;
   }
 
-  async create(email: string, password: string, name: string) {
-    // TODO ensure unique user
-    return {
-      id: 3,
-      email,
-      name,
-      password,
-    };
-  }
-
-  async find() {
-    return this.getFakeDb();
-  }
-
-  async findOne(id: number) {
-    const user = this.getFakeDb().find((user) => user.id === id);
+  async findOne(id: string): Promise<User | undefined> {
+    const user: User = this.users.find((user) => user.userId === id);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
@@ -44,8 +42,8 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email: string) {
-    const user = this.getFakeDb().find((user) => user.email === email);
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    const user = this.users.find((user) => user.email === email);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
@@ -53,8 +51,8 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, attrs: Partial<User>) {
-    const user = this.getFakeDb().find((user) => user.id === id);
+  async update(id: string, attrs: Partial<User>): Promise<User | undefined> {
+    const user = this.findOne(id);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
@@ -63,8 +61,8 @@ export class UsersService {
     return user;
   }
 
-  async remove(id: number) {
-    const user = this.getFakeDb().find((user) => user.id === id);
+  async remove(id: string): Promise<User | undefined> {
+    const user = this.findOne(id);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
