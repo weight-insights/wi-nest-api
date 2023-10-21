@@ -1,10 +1,10 @@
 ### Sign up a new user
-POST http://localhost:3000/api/v1/auth/signup
+POST http://localhost:3000/api/v1/auth/sign-up
 Content-Type: application/json
 
 {
   "email": "asdfg@asdfg.com",
-  "password": "asdfgh"
+  "password": "abc123"
 }
 
 ### Sign in
@@ -17,12 +17,12 @@ Content-Type: application/json
 }
 
 ### Sign up with an existing email
-POST http://localhost:3000/api/v1/auth/signup
+POST http://localhost:3000/api/v1/auth/sign-up
 Content-Type: application/json
 
 {
   "email": "jussraramoreirac@gmail.com",
-  "password": "asdfgh"
+  "password": "abc123"
 }
 
 ### Sign in with wrong password
@@ -30,8 +30,8 @@ POST http://localhost:3000/api/v1/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "jussraramoreirac@gmail.com",
-  "password": "asdfgh"
+  "email": "jussaramoreirac@gmail.com",
+  "password": "abc124"
 }
 
 ### Sign out
@@ -39,4 +39,4 @@ POST http://localhost:3000/api/v1/auth/signout
 
 ### Get profile
 GET http://localhost:3000/api/v1/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTY5NjI4MjU3MywiZXhwIjoxNjk2MjgyNjMzfQ.htGzl81znIwLAo2Rq7EN4q2x4ZjYww3LyC6Y1uleiic
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTY5NzkwNzMzMywiZXhwIjoxNjk3OTA3OTMzfQ.K03avXtOcpN9JjSjMIWpCPasQy-mEc9_CWaQ-v5aWnY

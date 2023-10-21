@@ -6,21 +6,19 @@ import {
   HttpStatus,
   Post,
   Request,
-  Session, UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos/sign-in.dto';
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from './auth.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/sign-up')
-  async singUp(@Body() body: SignInDto, @Session() session: any) {
-    const user = await this.authService.signup(body.email, body.password);
-    session.userId = user.id;
-    session.email = user.email;
+  async singUp(@Body() body: SignInDto) {
+    const user = await this.authService.signUp(body.email, body.password);
     return user;
   }
 
@@ -39,6 +37,6 @@ export class AuthController {
 
   @Post('/sign-out')
   async signOut() {
-    return { status: 'in progress'};
+    return { status: 'in progress' };
   }
 }

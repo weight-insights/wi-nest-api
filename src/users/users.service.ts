@@ -3,33 +3,26 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
-  // TODO delete this method after db implementation
-  private readonly users = [
+  // TODO delete after db implementation
+  private readonly users: User[] = [
     {
       userId: '1234a',
       email: 'tfgteles@gmail.com',
       name: 'Tiago',
-      password: 'abc123',
+      password: '$2b$10$F6m4h0zusFaKSz241JDZd.vM6uehUPDa02lhtnFdmI9XTUocITYf2',
     },
     {
       userId: '1234b',
       email: 'jussaramoreirac@gmail.com',
       name: 'Jussara Teles',
-      password: 'abc123',
+      password: '$2b$10$F6m4h0zusFaKSz241JDZd.vM6uehUPDa02lhtnFdmI9XTUocITYf2',
     },
   ];
 
-  // async create(email: string, password: string, name: string) {
-  //   return {
-  //     id: 3,
-  //     email,
-  //     name,
-  //     password,
-  //   };
-  // }
-
   async find(query: string): Promise<User[]> {
-    const users = this.users.filter((user) => user.name.includes(query));
+    const users = this.users.filter(
+      (user) => user.name.includes(query) || user.email.includes(query),
+    );
     return users;
   }
 
@@ -52,7 +45,7 @@ export class UsersService {
   }
 
   async update(id: string, attrs: Partial<User>): Promise<User | undefined> {
-    const user = this.findOne(id);
+    const user = await this.findOne(id);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
@@ -62,7 +55,7 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<User | undefined> {
-    const user = this.findOne(id);
+    const user = await this.findOne(id);
     // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
