@@ -20,11 +20,14 @@ import { AuthGuard } from 'src/security/auth.guard';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get('email/:email')
   findUserByEmail(@Param('email') email: string) {
     return this.usersService.findOneByEmail(email);
   }
 
+  @UseGuards(AuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
@@ -32,17 +35,22 @@ export class UsersController {
     return new User(user);
   }
 
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   findAllUsers(@Query('query') query = '') {
     return this.usersService.find(query);
   }
 
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(id, body);
   }
 
   @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Delete('/:id')
   removeUser(@Param('id') id: string, @Request() req) {
     console.log('userId', req.user.sub);
