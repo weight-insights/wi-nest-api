@@ -1,8 +1,8 @@
 import { Member } from 'src/members/member.entity';
 
 export class Game {
-  id: number;
-  admin: number;
+  gameId: string;
+  adminId: string;
   name: string;
   active: boolean;
   info: string;
@@ -13,4 +13,8 @@ export class Game {
   currency: string;
   vacationLength: number;
   members: Member[];
+
+  constructor(partial: Partial<Game>) {
+    Object.assign(this, partial);
+  }
 }
