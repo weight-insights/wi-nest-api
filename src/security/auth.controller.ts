@@ -15,6 +15,7 @@ import { Public } from './public.decorator';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('/sign-up')
   async singUp(@Body() body: SignInDto) {
     const user = await this.authService.signUp(body.email, body.password);

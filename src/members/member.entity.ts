@@ -1,13 +1,12 @@
-import { Weight } from './weight.entity';
-import { Payment } from './payment.entity';
-
 export class Member {
   memberId: string;
-  userId: number;
-  gameId: number;
+  userId: string;
+  gameId: string;
   weightGoal: number;
   vacationStartDate: string;
   status: string;
-  weights: Weight[];
-  payments: Payment[];
+
+  constructor(partial: Partial<Member>) {
+    Object.assign(this, partial);
+  }
 }

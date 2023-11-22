@@ -4,9 +4,10 @@ import { AuthModule } from './security/auth.module';
 import { AuthGuard } from './security/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { GamesModule } from './games/games.module';
+import { MembersModule } from './members/members.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, GamesModule],
+  imports: [UsersModule, AuthModule, GamesModule, MembersModule],
   controllers: [],
   providers: [
     {
