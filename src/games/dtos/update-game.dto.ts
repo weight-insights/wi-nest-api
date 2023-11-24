@@ -9,9 +9,21 @@ export class UpdateGameDto {
   @IsOptional()
   info: string;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  dates: string[];
+  startDate: string;
+
+  @IsString()
+  @IsOptional()
+  gameTimeZone: string;
+
+  @IsNumber()
+  @IsOptional()
+  gameLength: number;
+
+  @IsNumber()
+  @IsOptional()
+  gamePeriod: number;
 
   @IsNumber()
   @IsOptional()

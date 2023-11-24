@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateGameDto {
   @IsString()
@@ -7,8 +7,17 @@ export class CreateGameDto {
   @IsString()
   info: string;
 
-  @IsArray()
-  dates: string[];
+  @IsString()
+  startDate: string;
+
+  @IsString()
+  gameTimeZone: string;
+
+  @IsNumber()
+  gameLength: number;
+
+  @IsNumber()
+  gamePeriod: number;
 
   @IsNumber()
   minWeightLoss: number;

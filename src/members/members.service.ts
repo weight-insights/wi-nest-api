@@ -8,6 +8,7 @@ export class MembersService {
     {
       memberId: 'qwer123',
       userId: 'abc123',
+      name: '',
       gameId: 'asdf123',
       weightGoal: 85,
       vacationStartDate: '',

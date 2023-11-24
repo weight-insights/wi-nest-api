@@ -1,5 +1,5 @@
 import { Payment } from '../payment.entity';
-import { Weight } from '../weight.entity';
+import { Weight } from '../../weights/weight.entity';
 
 export class MemberDto {
   memberId: string;

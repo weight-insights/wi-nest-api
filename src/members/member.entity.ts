@@ -2,6 +2,7 @@ export class Member {
   memberId: string;
   userId: string;
   gameId: string;
+  name: string;
   weightGoal: number;
   vacationStartDate: string;
   status: string;

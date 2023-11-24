@@ -12,13 +12,15 @@ export class GamesService {
       name: 'Taliban dummy',
       active: true,
       info: 'Testing game',
-      dates: ['1977-06-08', '1978-07-14', '2005-02-03', '2009-10-01'],
+      startDate: '2005-02-03',
+      gameTimeZone: 'EST',
+      gameLength: 20,
+      gamePeriod: 7,
       minWeightLoss: 0.1,
       weightUnit: 'kg',
       fee: 10,
       currency: 'BRL',
       vacationLength: 4,
-      members: [],
     },
     {
       gameId: 'zxc123',
@@ -26,13 +28,15 @@ export class GamesService {
       name: 'Taliban inactive',
       active: false,
       info: 'Testing inactive game',
-      dates: ['1977-06-08', '1978-07-14', '2005-02-03', '2009-10-01'],
+      startDate: '2009-10-01',
+      gameTimeZone: 'EST',
+      gameLength: 20,
+      gamePeriod: 7,
       minWeightLoss: 0.1,
       weightUnit: 'kg',
       fee: 10,
       currency: 'BRL',
       vacationLength: 4,
-      members: [],
     },
   ];
 
@@ -41,7 +45,6 @@ export class GamesService {
       ...game,
       gameId: 'lkj098',
       active: true,
-      members: [],
     });
     return newGame;
   }
