@@ -1,4 +1,4 @@
-import { Payment } from '../payment.entity';
+import { Payment } from '../../payments/payment.entity';
 import { Weight } from '../../weights/weight.entity';
 
 export class MemberDto {

@@ -6,9 +6,17 @@ import { APP_GUARD } from '@nestjs/core';
 import { GamesModule } from './games/games.module';
 import { MembersModule } from './members/members.module';
 import { WeightsModule } from './weights/weights.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, GamesModule, MembersModule, WeightsModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    GamesModule,
+    MembersModule,
+    WeightsModule,
+    PaymentsModule,
+  ],
   controllers: [],
   providers: [
     {
