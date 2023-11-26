@@ -1,0 +1,1284 @@
+{
+	"info": {
+		"_postman_id": "f2da1868-c002-4627-baa8-f51da27050b7",
+		"name": "wi-nest-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Sign-up a new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"asdfg@asdfg.com\",\n    \"password\": \"abc123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/auth/sign-up",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign-in an existing user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"jussaramoreirac@gmail.com\",\n  \"password\": \"abc123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/auth/sign-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile from jwt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/auth/profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDQxOTU4OSwiZXhwIjoxNzAwNDIwNDg5fQ.NKh751ymVydxbuXBtZG5IrO0zMe1ygNOUswbpdlcnos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users filtered by their names or email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTY5ODM1MzIyMiwiZXhwIjoxNjk4MzU0MTIyfQ.kKmfpFGzkc8mo2Shg973dFC54EpvColqboikTd1ZhN0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/users?query=Ju",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Ju"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a particular user with a given id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTY5ODM1MzIyMiwiZXhwIjoxNjk4MzU0MTIyfQ.kKmfpFGzkc8mo2Shg973dFC54EpvColqboikTd1ZhN0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/users/1234b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1234b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all users with a given email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/users/email/tfgteles@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"email",
+								"tfgteles@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"aaaa@aaa.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/users/1234b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1234b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user given id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/users/1234a",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1234a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "games",
+			"item": [
+				{
+					"name": "Create a game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MDE1MSwiZXhwIjoxNzAwNjkxMDUxfQ.311ZBwN8gAZuPBNby5h2C38E_DwAmmZPDMbViCST0Tc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Taliban 2023\",\n    \"info\": \"\",\n    \"startDate\": \"2023-11-03\",\n    \"gameTimeZone\": \"EST\",\n    \"gameLength\": 20,\n    \"gamePeriod\": 7,\n    \"minWeightLoss\": 0.1,\n    \"weightUnit\": \"kg\",\n    \"fee\": 10,\n    \"currency\": \"BRL\",\n    \"vacationLength\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/games",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a particular game with a given id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDQxOTU4OSwiZXhwIjoxNzAwNDIwNDg5fQ.NKh751ymVydxbuXBtZG5IrO0zMe1ygNOUswbpdlcnos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/games/asd123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"games",
+								"asd123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all games filtered by their names",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDQxOTU4OSwiZXhwIjoxNzAwNDIwNDg5fQ.NKh751ymVydxbuXBtZG5IrO0zMe1ygNOUswbpdlcnos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/games?query=Tal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"games"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Tal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDQxOTU4OSwiZXhwIjoxNzAwNDIwNDg5fQ.NKh751ymVydxbuXBtZG5IrO0zMe1ygNOUswbpdlcnos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Taliban 2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/games/asd123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"games",
+								"asd123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTY5OTgyODE3MiwiZXhwIjoxNjk5ODI5MDcyfQ.Zqgg4wZsZDBptvmPm2lJKXJZ0iwP8iyzp21A-kZMKDI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/games/asd123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"games",
+								"asd123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "members",
+			"item": [
+				{
+					"name": "Create a member",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MDE1MSwiZXhwIjoxNzAwNjkxMDUxfQ.311ZBwN8gAZuPBNby5h2C38E_DwAmmZPDMbViCST0Tc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gameId\": \"qwert5678\",\n    \"weightGoal\": 88,\n    \"name\": \"TT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/members",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all memberships",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MDE1MSwiZXhwIjoxNzAwNjkxMDUxfQ.311ZBwN8gAZuPBNby5h2C38E_DwAmmZPDMbViCST0Tc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/members/user-id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"user-id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get member given the member id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MDE1MSwiZXhwIjoxNzAwNjkxMDUxfQ.311ZBwN8gAZuPBNby5h2C38E_DwAmmZPDMbViCST0Tc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/members/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get members given the game id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MTEzNCwiZXhwIjoxNzAwNjkyMDM0fQ.4zh3Xu9Uwi_xFDiOAA3zifZJy1NLNRpG2PhZVkg2KgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/members/game-id/asdf123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"game-id",
+								"asdf123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all members from all games",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MTEzNCwiZXhwIjoxNzAwNjkyMDM0fQ.4zh3Xu9Uwi_xFDiOAA3zifZJy1NLNRpG2PhZVkg2KgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/members",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a member",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MTEzNCwiZXhwIjoxNzAwNjkyMDM0fQ.4zh3Xu9Uwi_xFDiOAA3zifZJy1NLNRpG2PhZVkg2KgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vacationStartDate\": \"2024-06-08\",\n    \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/members/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a member",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDY5MTEzNCwiZXhwIjoxNzAwNjkyMDM0fQ.4zh3Xu9Uwi_xFDiOAA3zifZJy1NLNRpG2PhZVkg2KgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/members/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "weights",
+			"item": [
+				{
+					"name": "Add a weight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NTY1NSwiZXhwIjoxNzAwODU2NTU1fQ.tUIP85pxSSkXvolUgW3PsHl8AzPXjq4QAbvWAkm4Z3Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": \"abc123\",\n    \"gameId\": \"qwert5678\",\n    \"weight\": 103\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/weights",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a weight given the weight id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/weights/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get weights given the member id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/weights/member-id/abc123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights",
+								"member-id",
+								"abc123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get weights given the game id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/weights/game-id/asdf123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights",
+								"game-id",
+								"asdf123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all weights",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/weights",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a weight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NDM5MCwiZXhwIjoxNzAwODU1MjkwfQ.LFQ8vurqoifGz9o6a4SqvRMKRd51kOr8BUTZzQhTstc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"weight\": 101\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/weights/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a weight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1NTY1NSwiZXhwIjoxNzAwODU2NTU1fQ.tUIP85pxSSkXvolUgW3PsHl8AzPXjq4QAbvWAkm4Z3Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/weights/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weights",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "Add a payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": \"abc123\",\n    \"gameId\": \"qwert5678\",\n    \"payment\": 70\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/payments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a weight given the payment id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/payments/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get payments given the member id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/payments/member-id/abc123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"member-id",
+								"abc123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get payments given the game id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/payments/game-id/asdf123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"game-id",
+								"asdf123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/payments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment\": 666\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/payments/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDg1ODcyOSwiZXhwIjoxNzAwODU5NjI5fQ.W6yoU74nJhEtBFZQNKOz5S4CX7Vj5sLaJgn81teuOtQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/payments/qwer123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"qwer123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hello",
+			"item": [
+				{
+					"name": "Get all hello messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/hello",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"hello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new hello message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hello world from Postman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/hello",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"hello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a hello given the id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/hello/qwert124",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"hello",
+								"qwert124"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a hello",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/hello/qwert123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"hello",
+								"qwert123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a hello message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/hello/qwert124",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"hello",
+								"qwert124"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0YiIsInVzZXJuYW1lIjoianVzc2FyYW1vcmVpcmFjQGdtYWlsLmNvbSIsImlhdCI6MTcwMDQxOTU4OSwiZXhwIjoxNzAwNDIwNDg5fQ.NKh751ymVydxbuXBtZG5IrO0zMe1ygNOUswbpdlcnos",
+			"type": "default"
+		}
+	]
+}
