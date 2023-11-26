@@ -4,6 +4,8 @@ Weight Insights Backend - NestJs
 
 ## Firestore Database
 
+https://console.firebase.google.com
+
 docs: https://firebase.google.com/docs/firestore/
 
 https://googleapis.dev/nodejs/firestore/latest/Firestore.html
