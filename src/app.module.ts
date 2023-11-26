@@ -7,8 +7,8 @@ import { GamesModule } from './games/games.module';
 import { MembersModule } from './members/members.module';
 import { WeightsModule } from './weights/weights.module';
 import { PaymentsModule } from './payments/payments.module';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { FirestoreModule } from './firestore/firestore.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { FirestoreModule } from './firestore/firestore.module';
 import { HelloModule } from './hello/hello.module';
 
 @Module({
@@ -20,15 +20,19 @@ import { HelloModule } from './hello/hello.module';
     WeightsModule,
     PaymentsModule,
     HelloModule,
-    // ConfigModule.forRoot({ isGlobal: true }),
-    // FirestoreModule.forRoot({
-    //   imports: [ConfigModule],
-    //   useFactory: (configService: ConfigService) => ({
-    //     keyFilename: configService.get<string>('KEY_FILE_NAME'),
-    //     projectId: configService.get<string>('PROJECT_ID'),
-    //   }),
-    //   inject: [ConfigService],
-    // }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    FirestoreModule.forRoot({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        // keyFilename: configService.get<string>('KEY_FILE_NAME'),
+        projectId: configService.get<string>('FIRESTORE_PROJECT_ID'),
+        credentials: {
+          client_email: configService.get<string>('FIRESTORE_CLIENT_EMAIL'),
+          private_key: configService.get<string>('FIRESTORE_PRIVATE_KEY'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [],
   providers: [
