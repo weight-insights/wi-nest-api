@@ -1,4 +1,6 @@
 export class Payment {
+  static collectionName = 'payments';
+
   paymentId: string;
   gameId: string;
   memberId: string;

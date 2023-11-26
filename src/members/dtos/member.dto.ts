@@ -7,7 +7,7 @@ export class MemberDto {
   gameId: number;
   weightGoal: number;
   vacationStartDate: string;
-  status: string;
+  active: boolean;
   weights: Weight[];
   payments: Payment[];
 }

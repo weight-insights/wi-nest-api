@@ -1,4 +1,6 @@
 export class Weight {
+  static collectionName = 'weights';
+
   weightId: string;
   gameId: string;
   memberId: string;

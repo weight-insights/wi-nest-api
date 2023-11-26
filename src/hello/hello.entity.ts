@@ -1,7 +1,16 @@
-export class HelloEntity {
-  static collectionName: string = 'games';
-  id: string;
+import { Exclude } from 'class-transformer';
+
+export class Hello {
+  static collectionName = 'hello';
+
+  helloId: string;
   name: string;
-  admin: string;
-  status: string;
+  creationDate: string;
+
+  @Exclude()
+  active: boolean;
+
+  constructor(partial: Partial<Hello>) {
+    Object.assign(this, partial);
+  }
 }

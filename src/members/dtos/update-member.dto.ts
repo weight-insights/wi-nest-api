@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateMemberDto {
   @IsString()
@@ -13,7 +13,7 @@ export class UpdateMemberDto {
   @IsOptional()
   vacationStartDate: string;
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
-  status: string;
+  active: boolean;
 }

@@ -12,7 +12,7 @@ export class MembersService {
       gameId: 'asdf123',
       weightGoal: 85,
       vacationStartDate: '',
-      status: 'applied',
+      active: true,
     },
   ];
 
@@ -22,7 +22,7 @@ export class MembersService {
       memberId: 'qwert1234',
       userId,
       vacationStartDate: '',
-      status: 'applied',
+      active: false,
     });
   }
 

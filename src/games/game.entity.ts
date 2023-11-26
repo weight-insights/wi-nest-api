@@ -1,4 +1,6 @@
 export class Game {
+  static collectionName = 'games';
+
   gameId: string;
   adminId: string;
   name: string;
