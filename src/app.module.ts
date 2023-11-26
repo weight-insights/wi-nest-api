@@ -7,6 +7,9 @@ import { GamesModule } from './games/games.module';
 import { MembersModule } from './members/members.module';
 import { WeightsModule } from './weights/weights.module';
 import { PaymentsModule } from './payments/payments.module';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { FirestoreModule } from './firestore/firestore.module';
+import { HelloModule } from './hello/hello.module';
 
 @Module({
   imports: [
@@ -16,6 +19,16 @@ import { PaymentsModule } from './payments/payments.module';
     MembersModule,
     WeightsModule,
     PaymentsModule,
+    HelloModule,
+    // ConfigModule.forRoot({ isGlobal: true }),
+    // FirestoreModule.forRoot({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) => ({
+    //     keyFilename: configService.get<string>('KEY_FILE_NAME'),
+    //     projectId: configService.get<string>('PROJECT_ID'),
+    //   }),
+    //   inject: [ConfigService],
+    // }),
   ],
   controllers: [],
   providers: [
