@@ -1,23 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { CollectionReference } from '@google-cloud/firestore';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: '1234a',
-      email: 'tfgteles@gmail.com',
-      name: 'Tiago',
-      password: '$2b$10$F6m4h0zusFaKSz241JDZd.vM6uehUPDa02lhtnFdmI9XTUocITYf2',
-    },
-    {
-      userId: '1234b',
-      email: 'jussaramoreirac@gmail.com',
-      name: 'Jussara Teles',
-      password: '$2b$10$F6m4h0zusFaKSz241JDZd.vM6uehUPDa02lhtnFdmI9XTUocITYf2',
-    },
-  ];
+  constructor(@Inject(User.collectionName) private usersCollection: CollectionReference<User>) {}
 
+  private readonly users = [];
+
+  async create(user: CreateUserDto) {
+    const userId = uuidv4();
+    const newUser = {
+      userId,
+      ...user,
+    };
+    await this.usersCollection.doc(userId).set(newUser);
+    return newUser;
+  }
+  
   async find() {
     return this.users;
   }
