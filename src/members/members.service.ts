@@ -1,78 +1,79 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Member } from './member.entity';
 import { CreateMemberDto } from './dtos/create-member.dto';
+import { CollectionReference } from '@google-cloud/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class MembersService {
-  private readonly members: Member[] = [
-    {
-      memberId: 'qwer123',
-      userId: 'abc123',
-      name: '',
-      gameId: 'asdf123',
-      weightGoal: 85,
-      vacationStartDate: '',
-      active: true,
-    },
-  ];
+  constructor(
+    @Inject(Member.collectionName)
+    private membersCollection: CollectionReference<Member>,
+  ) {}
 
-  async create(member: CreateMemberDto, userId): Promise<Member> {
-    return new Member({
+  async create(member: CreateMemberDto, userId) {
+    const memberId = uuidv4();
+    const newMember = {
       ...member,
-      memberId: 'qwert1234',
       userId,
-      vacationStartDate: '',
+      memberId,
       active: false,
-    });
+      vacationStartDate: '',
+    };
+    await this.membersCollection.doc(memberId).set(newMember);
+    return newMember;
   }
 
-  async find(): Promise<Member[]> {
-    return this.members;
+  async find() {
+    const snapshot = await this.membersCollection.get();
+    const members: Member[] = [];
+    snapshot.forEach((doc) => members.push(doc.data()));
+    return members;
   }
 
-  async findOne(id: string): Promise<Member | undefined> {
-    const member: Member = this.members.find(
-      (member) => member.memberId === id,
-    );
+  async findOne(id: string) {
+    const member = (await this.membersCollection.doc(id).get()).data();
     if (!member) {
       throw new NotFoundException('member not found');
     }
     return member;
   }
 
-  async findByUserId(id: string): Promise<Member[]> {
-    const members: Member[] = this.members.filter(
-      (member) => member.userId === id,
-    );
+  async findByUserId(id: string) {
+    const snapshot = await this.membersCollection
+      .where('userId', '==', id)
+      .get();
+    const members: Member[] = [];
+    snapshot.forEach((doc) => members.push(doc.data()));
     return members;
   }
 
-  async findByGameId(id: string): Promise<Member[]> {
-    const members: Member[] = this.members.filter(
-      (member) => member.gameId === id,
-    );
+  async findByGameId(id: string) {
+    const snapshot = await this.membersCollection
+      .where('gameId', '==', id)
+      .get();
+    const members: Member[] = [];
+    snapshot.forEach((doc) => members.push(doc.data()));
     return members;
   }
 
-  async update(
-    id: string,
-    attrs: Partial<Member>,
-  ): Promise<Member | undefined> {
+  async update(id: string, attrs: Partial<Member>) {
     const member = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!member) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('member not found');
     }
-    Object.assign(member, attrs);
-    return member;
+    const updatedMember = instanceToPlain(Object.assign(member, attrs));
+    await this.membersCollection.doc(id).update(updatedMember);
+    return updatedMember;
   }
 
-  async remove(id: string): Promise<Member | undefined> {
+  async remove(id: string) {
     const member = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!member) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('member not found');
     }
+    await this.membersCollection.doc(id).delete();
     return member;
   }
 }
