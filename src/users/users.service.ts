@@ -3,8 +3,7 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
-  // TODO delete after db implementation
-  private readonly users: User[] = [
+  private readonly users = [
     {
       userId: '1234a',
       email: 'tfgteles@gmail.com',
@@ -19,34 +18,25 @@ export class UsersService {
     },
   ];
 
-  async find(query: string): Promise<User[]> {
-    const users = this.users.filter(
-      (user) => user.name.includes(query) || user.email.includes(query),
-    );
+  async find() {
+    return this.users;
+  }
+
+  async findOne(id: string) {
+    const user = this.users.find((user) => user.userId === id);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
+  }
+
+  async findByEmail(email: string) {
+    const users = this.users.filter((user) => user.email === email);
     return users;
   }
 
-  async findOne(id: string): Promise<User | undefined> {
-    const user: User = this.users.find((user) => user.userId === id);
-    // TODO verify how the db server respond to a not found
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
-    return user;
-  }
-
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.email === email);
-    // TODO verify how the db server respond to a not found
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
-    return user;
-  }
-
-  async update(id: string, attrs: Partial<User>): Promise<User | undefined> {
+  async update(id: string, attrs: Partial<User>) {
     const user = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -54,9 +44,8 @@ export class UsersService {
     return user;
   }
 
-  async remove(id: string): Promise<User | undefined> {
+  async remove(id: string) {
     const user = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!user) {
       throw new NotFoundException('user not found');
     }

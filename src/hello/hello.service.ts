@@ -13,52 +13,40 @@ export class HelloService {
   ) {}
 
   async create(hello: CreateHelloDto) {
-    const newHello = new Hello({
-      helloId: uuidv4(),
+    const helloId = uuidv4();
+    const newHello = {
+      helloId,
       ...hello,
       creationDate: new Date().toLocaleDateString('en-ca'),
       active: false,
-    });
-    const result = await this.helloCollection
-      .doc(newHello.helloId)
-      .set(newHello);
-    console.log('create');
-    console.log(result);
-    return result;
+    };
+    await this.helloCollection.doc(helloId).set(newHello);
+    return newHello;
   }
 
   async findOne(id: string) {
-    const hello = await this.helloCollection.doc(id).get();
+    const hello = (await this.helloCollection.doc(id).get()).data();
     if (!hello) {
       throw new NotFoundException('hello not found');
     }
-    console.log('findOne');
-    console.log(hello);
     return hello;
   }
 
   async find() {
     const snapshot = await this.helloCollection.get();
-    console.log('find');
-    console.log(snapshot[0]);
     const hellos: Hello[] = [];
     snapshot.forEach((doc) => hellos.push(doc.data()));
-    console.log(hellos);
     return hellos;
   }
 
   async update(id: string, attrs: Partial<Hello>) {
-    const hello = await this.findOne(id);
-    if (!hello) {
+    const oldHello = await this.findOne(id);
+    if (!oldHello) {
       throw new NotFoundException('hello not found');
     }
-    Object.assign(hello, attrs);
-    const result = await this.helloCollection
-      .doc(id)
-      .update(instanceToPlain(hello));
-    console.log('update');
-    console.log(result);
-    return result;
+    const updatedHello = instanceToPlain(Object.assign(oldHello, attrs));
+    await this.helloCollection.doc(id).update(updatedHello);
+    return updatedHello;
   }
 
   async remove(id: string) {
@@ -66,9 +54,7 @@ export class HelloService {
     if (!hello) {
       throw new NotFoundException('hello not found');
     }
-    const result = await this.helloCollection.doc(id).delete();
-    console.log('remove');
-    console.log(result);
-    return result;
+    await this.helloCollection.doc(id).delete();
+    return hello;
   }
 }

@@ -24,7 +24,8 @@ export class HelloController {
   @Public()
   @Post()
   async createHello(@Body() body: CreateHelloDto) {
-    return this.helloService.create(body);
+    const hello = await this.helloService.create(body);
+    return plainToInstance(Hello, hello);
   }
 
   @Public()
@@ -44,15 +45,17 @@ export class HelloController {
 
   @Public()
   @Patch('/:id')
-  updateWeight(@Param('id') id: string, @Body() body: UpdateHelloDto) {
-    return this.helloService.update(id, body);
+  async updateWeight(@Param('id') id: string, @Body() body: UpdateHelloDto) {
+    const hello = await this.helloService.update(id, body);
+    return plainToInstance(Hello, hello);
   }
 
   @Public()
   @Delete('/:id')
-  removeWeight(@Param('id') id: string, @Request() req) {
-    console.log('userId', req.user.sub);
-    console.log('email', req.user.username);
-    return this.helloService.remove(id);
+  async removeWeight(@Param('id') id: string, @Request() req) {
+    // console.log('userId', req.user.sub);
+    // console.log('email', req.user.username);
+    const hello = await this.helloService.remove(id);
+    return plainToInstance(Hello, hello);;
   }
 }
