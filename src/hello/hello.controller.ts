@@ -56,6 +56,6 @@ export class HelloController {
     // console.log('userId', req.user.sub);
     // console.log('email', req.user.username);
     const hello = await this.helloService.remove(id);
-    return plainToInstance(Hello, hello);;
+    return plainToInstance(Hello, hello);
   }
 }

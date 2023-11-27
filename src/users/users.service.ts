@@ -3,12 +3,14 @@ import { User } from './user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { CollectionReference } from '@google-cloud/firestore';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(User.collectionName) private usersCollection: CollectionReference<User>) {}
-
-  private readonly users = [];
+  constructor(
+    @Inject(User.collectionName)
+    private usersCollection: CollectionReference<User>,
+  ) {}
 
   async create(user: CreateUserDto) {
     const userId = uuidv4();
@@ -19,13 +21,16 @@ export class UsersService {
     await this.usersCollection.doc(userId).set(newUser);
     return newUser;
   }
-  
+
   async find() {
-    return this.users;
+    const snapshot = await this.usersCollection.get();
+    const users: User[] = [];
+    snapshot.forEach((doc) => users.push(doc.data()));
+    return users;
   }
 
   async findOne(id: string) {
-    const user = this.users.find((user) => user.userId === id);
+    const user = (await this.usersCollection.doc(id).get())?.data();
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -33,7 +38,14 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    const users = this.users.filter((user) => user.email === email);
+    const snapshot = await this.usersCollection
+      .where('email', '==', email)
+      .get();
+    // if (snapshot.empty) {
+    //   throw new Error(`User with email ${email} does not exist.`);
+    // }
+    const users: User[] = [];
+    snapshot.forEach((doc) => users.push(doc.data()));
     return users;
   }
 
@@ -42,8 +54,9 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
-    Object.assign(user, attrs);
-    return user;
+    const updatedUser = instanceToPlain(Object.assign(user, attrs));
+    await this.usersCollection.doc(id).update(updatedUser);
+    return updatedUser;
   }
 
   async remove(id: string) {
@@ -51,6 +64,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
+    await this.usersCollection.doc(id).delete();
     return user;
   }
 }

@@ -31,8 +31,11 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('/sign-in')
-  singIn(@Body() body: SignInDto) {
-    const accessToken = this.authService.signIn(body.email, body.password);
+  async singIn(@Body() body: SignInDto) {
+    const accessToken = await this.authService.signIn(
+      body.email,
+      body.password,
+    );
     return accessToken;
   }
 
@@ -42,7 +45,7 @@ export class AuthController {
   }
 
   @Post('/sign-out')
-  async signOut(@Request() req) {
+  signOut(@Request() req) {
     return { userId: req.user.sub, email: req.user.username };
   }
 }

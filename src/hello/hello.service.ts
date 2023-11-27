@@ -25,7 +25,7 @@ export class HelloService {
   }
 
   async findOne(id: string) {
-    const hello = (await this.helloCollection.doc(id).get()).data();
+    const hello = (await this.helloCollection.doc(id).get())?.data();
     if (!hello) {
       throw new NotFoundException('hello not found');
     }
