@@ -6,7 +6,6 @@ import {
   Get,
   Param,
   Patch,
-  Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -48,9 +47,7 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete('/:id')
-  async removeUser(@Param('id') id: string, @Request() req) {
-    console.log('userId', req.user.sub);
-    console.log('email', req.user.username);
+  async removeUser(@Param('id') id: string) {
     const user = await this.usersService.remove(id);
     return plainToInstance(User, user);
   }
