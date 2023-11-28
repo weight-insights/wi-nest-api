@@ -1,67 +1,77 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Weight } from './weight.entity';
 import { CreateWeightDto } from './dtos/create-weight.dto';
+import { CollectionReference } from '@google-cloud/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class WeightsService {
-  private readonly weights: Weight[] = [
-    {
-      weightId: 'qwer123',
-      memberId: 'abc123',
-      gameId: 'asdf123',
-      weight: 85,
-      date: '1978-07-14',
-    },
-  ];
+  constructor(
+    @Inject(Weight.collectionName)
+    private weightsCollection: CollectionReference<Weight>,
+  ) {}
 
-  async create(weight: CreateWeightDto): Promise<Weight> {
-    return new Weight({
+  async create(weight: CreateWeightDto) {
+    const weightId = uuidv4();
+    const newWeight = {
       ...weight,
+      weightId,
       date: new Date().toLocaleDateString('en-ca'),
-    });
+    };
+    await this.weightsCollection.doc(weightId).set(newWeight);
+    return weight;
   }
 
-  async find(): Promise<Weight[]> {
-    return this.weights;
+  async find() {
+    const snapshot = await this.weightsCollection.get();
+    const weights: Weight[] = [];
+    snapshot.forEach((doc) => weights.push(doc.data()));
+    return weights;
   }
 
-  async findOne(id: string): Promise<Weight | undefined> {
-    const weight: Weight = this.weights.find((w) => w.weightId === id);
+  async findOne(id: string) {
+    const weight = (await this.weightsCollection.doc(id).get())?.data();
     if (!weight) {
       throw new NotFoundException('weight not found');
     }
     return weight;
   }
 
-  async findByMemberId(id: string): Promise<Weight[]> {
-    const weights: Weight[] = this.weights.filter((w) => w.memberId === id);
+  async findByMemberId(id: string) {
+    const snapshot = await this.weightsCollection
+      .where('memberId', '==', id)
+      .get();
+    const weights: Weight[] = [];
+    snapshot.forEach((doc) => weights.push(doc.data()));
     return weights;
   }
 
   async findByGameId(id: string): Promise<Weight[]> {
-    const weights: Weight[] = this.weights.filter((w) => w.gameId === id);
+    const snapshot = await this.weightsCollection
+      .where('gameId', '==', id)
+      .get();
+    const weights: Weight[] = [];
+    snapshot.forEach((doc) => weights.push(doc.data()));
     return weights;
   }
 
-  async update(
-    id: string,
-    attrs: Partial<Weight>,
-  ): Promise<Weight | undefined> {
+  async update(id: string, attrs: Partial<Weight>) {
     const weight = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!weight) {
       throw new NotFoundException('weight not found');
     }
-    Object.assign(weight, attrs);
-    return weight;
+    const updatedWeight = instanceToPlain(Object.assign(weight, attrs));
+    await this.weightsCollection.doc(id).update(updatedWeight);
+    return updatedWeight;
   }
 
-  async remove(id: string): Promise<Weight | undefined> {
+  async remove(id: string) {
     const weight = await this.findOne(id);
-    // TODO verify how the db server respond to a not found
     if (!weight) {
       throw new NotFoundException('weight not found');
     }
+    await this.weightsCollection.doc(id).delete();
     return weight;
   }
 }
