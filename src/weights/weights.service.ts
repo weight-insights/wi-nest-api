@@ -20,7 +20,7 @@ export class WeightsService {
       date: new Date().toLocaleDateString('en-ca'),
     };
     await this.weightsCollection.doc(weightId).set(newWeight);
-    return weight;
+    return newWeight;
   }
 
   async find() {
