@@ -12,6 +12,24 @@ export class HelloService {
     private helloCollection: CollectionReference<Hello>,
   ) {}
 
+  private readonly fakeHellos = [
+    {
+      name: 'Hello world from Postman',
+      helloId: '099e9830-9688-4d1e-af6b-94891a98e0b4',
+      creationDate: '11/26/2023',
+    },
+    {
+      name: 'Vai ter filme e pizza sexta?',
+      helloId: 'ad1708fa-937b-4c9e-b220-d22525aa8bb4',
+      creationDate: '2023-11-29',
+    },
+    {
+      name: 'Hey there from Postman',
+      helloId: 'cd3fa4df-67a0-40ee-99b4-5b7a27b6f142',
+      creationDate: '11/26/2023',
+    },
+  ];
+
   async create(hello: CreateHelloDto) {
     const helloId = uuidv4();
     const newHello = {
@@ -20,7 +38,7 @@ export class HelloService {
       creationDate: new Date().toLocaleDateString('en-ca'),
       active: false,
     };
-    await this.helloCollection.doc(helloId).set(newHello);
+    // await this.helloCollection.doc(helloId).set(newHello);
     return newHello;
   }
 
@@ -33,10 +51,10 @@ export class HelloService {
   }
 
   async find() {
-    const snapshot = await this.helloCollection.get();
-    const hellos: Hello[] = [];
-    snapshot.forEach((doc) => hellos.push(doc.data()));
-    return hellos;
+    // const snapshot = await this.helloCollection.get();
+    // const hellos: Hello[] = [];
+    // snapshot.forEach((doc) => hellos.push(doc.data()));
+    return this.fakeHellos;
   }
 
   async update(id: string, attrs: Partial<Hello>) {
@@ -45,7 +63,7 @@ export class HelloService {
       throw new NotFoundException('hello not found');
     }
     const updatedHello = instanceToPlain(Object.assign(oldHello, attrs));
-    await this.helloCollection.doc(id).update(updatedHello);
+    // await this.helloCollection.doc(id).update(updatedHello);
     return updatedHello;
   }
 
@@ -54,7 +72,7 @@ export class HelloService {
     if (!hello) {
       throw new NotFoundException('hello not found');
     }
-    await this.helloCollection.doc(id).delete();
+    // await this.helloCollection.doc(id).delete();
     return hello;
   }
 }
