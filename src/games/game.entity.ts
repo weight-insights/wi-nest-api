@@ -4,7 +4,6 @@ export class Game {
   gameId: string;
   adminId: string;
   name: string;
-  active: boolean;
   info: string;
   startDate: string;
   gameTimeZone: string;
