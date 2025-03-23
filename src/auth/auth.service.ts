@@ -18,8 +18,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(user: UserDto): Promise<User> {
-    if (!user.email || user.password) {
+  async signUp(user: Partial<User>): Promise<UserDto> {
+    if (!user.email || !user.password) {
       throw new BadRequestException('email and password are required');
     }
     // See if email is in use
@@ -32,13 +32,13 @@ export class AuthService {
     const hash = await bcrypt.hash(user.password, salt);
     // Create a new user and save it
     user.password = hash;
-    const newUser = this.usersService.create(user);
+    const newUser = this.usersService.create(user as User);
     // return the user
     return newUser;
   }
 
   async signIn(email: string, password: string): Promise<AccessToken> {
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.usersService.findByEmailForSingIn(email);
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -46,7 +46,7 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user.userId, username: user.email };
+    const payload = { sub: user.id, username: email };
     const accessToken = await this.jwtService.signAsync(payload);
     return ({ accessToken } as AccessToken);
   }

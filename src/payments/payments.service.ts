@@ -11,17 +11,17 @@ export class PaymentsService {
       throw new BadRequestException('gameId and amount are required');
     }
 
-    const member = (await this.membersService.findByUserId(userId))?.find(member => member.gameId === payment.gameId);
-    if (!member) {
+    const members = (await this.membersService.findByUserIdAndGameId(payment.gameId, userId));
+    if (!members.length) {
       throw new NotFoundException('member not found');
     }
 
     const paymentId = new Date().toLocaleDateString('en-ca');
-    const payments = member.payments ?? {};
+    const payments = members[0].payments ?? {};
     payments[paymentId] = payment.amount;
-    await this.membersService.update(member.memberId, { payments });
+    await this.membersService.update(members[0].memberId, { payments });
 
-    return ({ ...payment, paymentId, memberId: member.memberId } as PaymentDto);
+    return ({ ...payment, paymentId, memberId: members[0].memberId } as PaymentDto);
   }
 
   async remove(userId: string, gameId: string, paymentId: string): Promise<PaymentDto> {
@@ -29,21 +29,21 @@ export class PaymentsService {
       throw new BadRequestException('gameId and paymentId are required');
     }
 
-    const member = (await this.membersService.findByUserId(userId))?.find(member => member.gameId === gameId);
-    if (!member) {
+    const members = (await this.membersService.findByUserIdAndGameId(gameId, userId));
+    if (!members.length) {
       throw new NotFoundException('member not found');
     }
 
-    const oldAmount = member.payments ? member.payments[paymentId] : undefined;
+    const oldAmount = members[0].payments ? members[0].payments[paymentId] : undefined;
 
     if (!oldAmount) {
       throw new NotFoundException('payment not found');
     }
 
-    const payments = member.payments;
+    const payments = members[0].payments;
     payments[paymentId] = undefined;
 
-    await this.membersService.update(member.memberId, { payments });
-    return { gameId, amount: oldAmount, memberId: member.memberId, paymentId };
+    await this.membersService.update(members[0].memberId, { payments });
+    return { gameId, amount: oldAmount, memberId: members[0].memberId, paymentId };
   }
 }

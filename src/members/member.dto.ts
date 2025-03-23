@@ -1,6 +1,5 @@
-export class Member {
-  static collectionName = 'members';
-
+export interface MemberDto {
+  memberId: string;
   userId: string;
   gameId: string;
   name: string;
@@ -8,8 +7,4 @@ export class Member {
   vacationStartDate?: string;
   payments?: Record<string, number>;
   weights?: Record<string, number>;
-
-  constructor(partial: Partial<Member>) {
-    Object.assign(this, partial);
-  }
 }

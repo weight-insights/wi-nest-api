@@ -1,7 +1,7 @@
 import { CollectionReference } from '@google-cloud/firestore';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Hello } from './hello.entity';
-import { v4 as uuidv4 } from 'uuid';
+import { HelloDto } from './hello.dto';
 
 @Injectable()
 export class HelloService {
@@ -10,49 +10,31 @@ export class HelloService {
     private helloCollection: CollectionReference<Hello>,
   ) {}
 
-  private readonly fakeHellos: Hello[] = [
-    {
-      message: 'Hello World!',
-      helloId: '099e9830-9688-4d1e-af6b-94891a98e0b4',
-      creationDate: '1978-07-14',
-    },
-    {
-      message: 'Hey There',
-      helloId: 'ad1708fa-937b-4c9e-b220-d22525aa8bb4',
-      creationDate: '2005-02-03',
-    },
-    {
-      message: 'Hi!!!',
-      helloId: 'cd3fa4df-67a0-40ee-99b4-5b7a27b6f142',
-      creationDate: '2009-10-01',
-    },
-  ];
-
-  async create(message: string) {
-    const helloId = uuidv4();
+  async create(message: string): Promise<HelloDto> {
     const creationDate = new Date().toLocaleDateString('en-ca');
-    const newHello = { helloId, message, creationDate } as Hello;
-    await this.helloCollection.doc(helloId).set(newHello);
-    return newHello;
+    const newHello = { message, creationDate } as Hello;
+    const res = await this.helloCollection.add(newHello);
+    const helloDto: HelloDto = { ...newHello, helloId: res.id } as HelloDto;
+    const resId = res.id;
+    const resGet = await res.get();
+    console.log('res:', resId, resGet);
+    return helloDto;
   }
 
   async findOne(id: string) {
-    const hello = (await this.helloCollection.doc(id).get())?.data();
-    if (!hello) {
+    const doc = await this.helloCollection.doc(id).get();
+    if (!doc.exists) {
       throw new NotFoundException('hello not found');
     }
-    return hello;
+    const helloDto: HelloDto = this.parseHelloEntityToDto(doc);
+    return helloDto;
   }
 
   async find() {
     const snapshot = await this.helloCollection.get();
-    const hellos: Hello[] = [];
-    snapshot.forEach((doc) => hellos.push(doc.data() as Hello));
+    const hellos: HelloDto[] = [];
+    snapshot.forEach((doc) => hellos.push(this.parseHelloEntityToDto(doc)));
     return hellos;
-  }
-
-  findFake() {
-    return this.fakeHellos;
   }
 
   async update(id: string, attrs: Partial<Hello>) {
@@ -60,8 +42,8 @@ export class HelloService {
     if (!oldHello) {
       throw new NotFoundException('hello not found');
     }
-    const updatedHello = { ...oldHello, ...attrs };
-    await this.helloCollection.doc(id).update(updatedHello);
+    const updatedHello = { ...oldHello, ...attrs } as HelloDto;
+    await this.helloCollection.doc(id).update(attrs);
     return updatedHello;
   }
 
@@ -72,5 +54,15 @@ export class HelloService {
     }
     await this.helloCollection.doc(id).delete();
     return hello;
+  }
+
+  private parseHelloEntityToDto(doc: { id: string; data: () => Hello; }): HelloDto {
+    const docData = doc.data();
+    const helloDto: HelloDto = {
+      helloId: doc.id,
+      message: docData.message,
+      creationDate: docData.creationDate
+    } as HelloDto;
+    return helloDto;
   }
 }

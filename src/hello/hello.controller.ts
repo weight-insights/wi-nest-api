@@ -23,13 +23,6 @@ export class HelloController {
   }
 
   @Public()
-  @Get('/fake')
-  findAllFakeHellos() {
-    const hellos = this.helloService.findFake();
-    return hellos;
-  }
-
-  @Public()
   @Get('/:id')
   async findHello(@Param('id') id: string) {
     const hello = await this.helloService.findOne(id);

@@ -7,7 +7,7 @@ import {
   Patch
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserDto } from './user.dto';
+import { User } from './user.entity';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -16,55 +16,30 @@ export class UsersController {
   @Get('/email/:email')
   async findUserByEmail(@Param('email') email: string) {
     const user = await this.usersService.findByEmail(email);
-    const userDto: UserDto = {
-      userId: user.userId,
-      email: user.email,
-      name: user.name
-    }
-    return userDto;
+    return user;
   }
 
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
-    const userDto: UserDto = {
-      userId: user.userId,
-      email: user.email,
-      name: user.name
-    }
-    return userDto;
+    return user;
   }
 
   @Get()
   async findAllUsers() {
     const users = await this.usersService.find();
-    const usersDto: UserDto[] = users.map(user => ({
-      userId: user.userId,
-      email: user.email,
-      name: user.name
-    }));
-    return usersDto;
+    return users;
   }
 
   @Patch('/:id')
-  async updateUser(@Param('id') id: string, @Body() body: UserDto) {
+  async updateUser(@Param('id') id: string, @Body() body: Partial<User>) {
     const user = await this.usersService.update(id, body);
-    const userDto: UserDto = {
-      userId: user.userId,
-      email: user.email,
-      name: user.name
-    };
-    return userDto;
+    return user;
   }
 
   @Delete('/:id')
   async removeUser(@Param('id') id: string) {
     const user = await this.usersService.remove(id);
-    const userDto: UserDto = {
-      userId: user.userId,
-      email: user.email,
-      name: user.name
-    };
-    return userDto;
+    return user;
   }
 }

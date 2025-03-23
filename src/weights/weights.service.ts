@@ -11,17 +11,17 @@ export class WeightsService {
       throw new BadRequestException('gameId and amount are required');
     }
 
-    const member = (await this.membersService.findByUserId(userId))?.find(member => member.gameId === weight.gameId);
-    if (!member) {
+    const members = (await this.membersService.findByUserIdAndGameId(weight.gameId, userId));
+    if (!members.length) {
       throw new NotFoundException('member not found');
     }
 
     const weightId = new Date().toLocaleDateString('en-ca');
-    const weights = member.weights ?? {};
+    const weights = members[0].weights ?? {};
     weights[weightId] = weight.amount;
-    await this.membersService.update(member.memberId, { weights });
+    await this.membersService.update(members[0].memberId, { weights });
 
-    return ({ ...weight, weightId, memberId: member.memberId } as WeightDto);
+    return ({ ...weight, weightId, memberId: members[0].memberId } as WeightDto);
   }
 
   async remove(userId: string, gameId: string, weightId: string): Promise<WeightDto> {
@@ -29,21 +29,21 @@ export class WeightsService {
       throw new BadRequestException('gameId and weightId are required');
     }
 
-    const member = (await this.membersService.findByUserId(userId))?.find(member => member.gameId === gameId);
-    if (!member) {
+    const members = (await this.membersService.findByUserIdAndGameId(gameId, userId));
+    if (!members.length) {
       throw new NotFoundException('member not found');
     }
 
-    const oldAmount = member.weights ? member.weights[weightId] : undefined;
+    const oldAmount = members[0].weights ? members[0].weights[weightId] : undefined;
 
     if (!oldAmount) {
       throw new NotFoundException('weight not found');
     }
 
-    const weights = member.weights;
+    const weights = members[0].weights;
     weights[weightId] = undefined;
 
-    await this.membersService.update(member.memberId, { weights });
-    return { gameId, amount: oldAmount, memberId: member.memberId, weightId };
+    await this.membersService.update(members[0].memberId, { weights });
+    return { gameId, amount: oldAmount, memberId: members[0].memberId, weightId };
   }
 }
