@@ -6,8 +6,9 @@ export class Member {
   gameId: string;
   name: string;
   weightGoal: number;
-  vacationStartDate: string;
-  active: boolean;
+  vacationStartDate?: string;
+  payments?: Record<string, number>;
+  weights?: Record<string, number>;
 
   constructor(partial: Partial<Member>) {
     Object.assign(this, partial);

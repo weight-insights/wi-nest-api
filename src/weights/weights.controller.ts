@@ -6,56 +6,26 @@ import {
   Param,
   Patch,
   Post,
+  Request
 } from '@nestjs/common';
 import { WeightsService } from './weights.service';
-import { CreateWeightDto } from './dtos/create-weight.dto';
-import { UpdateWeightDto } from './dtos/update-weight.dto';
-import { plainToInstance } from 'class-transformer';
-import { Weight } from './weight.entity';
+import { WeightDto } from './weight.dto';
 
 @Controller('api/v1/weights')
 export class WeightsController {
   constructor(private weightsService: WeightsService) {}
 
   @Post()
-  async createWeight(@Body() body: CreateWeightDto) {
-    const weight = await this.weightsService.create(body);
-    return plainToInstance(Weight, weight);
+  async createWeight(@Request() req, @Body() body: WeightDto) {
+    const userId = req.user.sub;
+    const weight = await this.weightsService.create(userId, body);
+    return weight;
   }
 
-  @Get('/:id')
-  async findWeight(@Param('id') id: string) {
-    const weight = await this.weightsService.findOne(id);
-    return plainToInstance(Weight, weight);
-  }
-
-  @Get('/member-id/:id')
-  async findWeightsByMemberId(@Param('id') id: string) {
-    const weights = await this.weightsService.findByMemberId(id);
-    return plainToInstance(Weight, weights);
-  }
-
-  @Get('/game-id/:id')
-  async findWeightsByGameId(@Param('id') id: string) {
-    const weights = await this.weightsService.findByGameId(id);
-    return plainToInstance(Weight, weights);
-  }
-
-  @Get()
-  async findAllWeights() {
-    const weights = await this.weightsService.find();
-    return plainToInstance(Weight, weights);
-  }
-
-  @Patch('/:id')
-  async updateWeight(@Param('id') id: string, @Body() body: UpdateWeightDto) {
-    const weight = await this.weightsService.update(id, body);
-    return plainToInstance(Weight, weight);
-  }
-
-  @Delete('/:id')
-  async removeWeight(@Param('id') id: string) {
-    const weight = await this.weightsService.remove(id);
-    return plainToInstance(Weight, weight);
+  @Delete('/game/:gameId/weight/:weightId')
+  async removeWeight(@Request() req, @Param('gameId') gameId: string, @Param('weightId') weightId: string) {
+    const userId = req.user.sub;
+    const weight = await this.weightsService.remove(userId, gameId, weightId);
+    return weight;
   }
 }

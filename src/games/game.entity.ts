@@ -6,8 +6,9 @@ export class Game {
   name: string;
   info: string;
   startDate: string;
+  endDate?: string; // either endDate or gameLength
+  gameLength?: number; // total number of weight events, including the first and final
   gameTimeZone: string;
-  gameLength: number; // total number of weight events, including the first and final
   gamePeriod: number; // number of days between weight events, standard of 7 (1 week)
   minWeightLoss: number;
   weightUnit: string;
