@@ -1,9 +1,7 @@
 import { CollectionReference } from '@google-cloud/firestore';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Hello } from './hello.entity';
-import { CreateHelloDto } from './dtos/create-hello.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class HelloService {
@@ -30,15 +28,15 @@ export class HelloService {
     },
   ];
 
-  async create(hello: CreateHelloDto) {
+  async create(hello: Partial<Hello>) {
     const helloId = uuidv4();
     const newHello = {
       helloId,
       ...hello,
       creationDate: new Date().toLocaleDateString('en-ca'),
       active: false,
-    };
-    // await this.helloCollection.doc(helloId).set(newHello);
+    } as Hello;
+    await this.helloCollection.doc(helloId).set(newHello);
     return newHello;
   }
 
@@ -51,9 +49,13 @@ export class HelloService {
   }
 
   async find() {
-    // const snapshot = await this.helloCollection.get();
-    // const hellos: Hello[] = [];
-    // snapshot.forEach((doc) => hellos.push(doc.data()));
+    const snapshot = await this.helloCollection.get();
+    const hellos: Hello[] = [];
+    snapshot.forEach((doc) => hellos.push(doc.data()));
+    return hellos;
+  }
+
+  async findFake() {
     return this.fakeHellos;
   }
 
@@ -62,8 +64,8 @@ export class HelloService {
     if (!oldHello) {
       throw new NotFoundException('hello not found');
     }
-    const updatedHello = instanceToPlain(Object.assign(oldHello, attrs));
-    // await this.helloCollection.doc(id).update(updatedHello);
+    const updatedHello = { ...oldHello, ...attrs };
+    await this.helloCollection.doc(id).update(updatedHello);
     return updatedHello;
   }
 
@@ -72,7 +74,7 @@ export class HelloService {
     if (!hello) {
       throw new NotFoundException('hello not found');
     }
-    // await this.helloCollection.doc(id).delete();
+    await this.helloCollection.doc(id).delete();
     return hello;
   }
 }

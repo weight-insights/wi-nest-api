@@ -2,14 +2,11 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
-  Patch,
   Post,
   Request
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { plainToInstance } from 'class-transformer';
 import { PaymentDto } from './payment.dto';
 
 @Controller('api/v1/payments')
