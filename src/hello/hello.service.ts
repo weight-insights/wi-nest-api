@@ -15,9 +15,6 @@ export class HelloService {
     const newHello = { message, creationDate } as Hello;
     const res = await this.helloCollection.add(newHello);
     const helloDto: HelloDto = { ...newHello, helloId: res.id } as HelloDto;
-    const resId = res.id;
-    const resGet = await res.get();
-    console.log('res:', resId, resGet);
     return helloDto;
   }
 
