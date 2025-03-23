@@ -18,8 +18,15 @@ export class HelloController {
   @Public()
   @Post()
   async createHello(@Body() body: Partial<Hello>) {
-    const hello = await this.helloService.create(body);
+    const hello = await this.helloService.create(body.message);
     return hello;
+  }
+
+  @Public()
+  @Get('/fake')
+  findAllFakeHellos() {
+    const hellos = this.helloService.findFake();
+    return hellos;
   }
 
   @Public()
@@ -33,13 +40,6 @@ export class HelloController {
   @Get()
   async findAllHellos() {
     const hellos = await this.helloService.find();
-    return hellos;
-  }
-
-  @Public()
-  @Get('/fake')
-  async findAllFakeHellos() {
-    const hellos = await this.helloService.findFake();
     return hellos;
   }
 

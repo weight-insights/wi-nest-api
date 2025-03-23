@@ -10,32 +10,28 @@ export class HelloService {
     private helloCollection: CollectionReference<Hello>,
   ) {}
 
-  private readonly fakeHellos = [
+  private readonly fakeHellos: Hello[] = [
     {
-      name: 'Hello world from Postman',
+      message: 'Hello World!',
       helloId: '099e9830-9688-4d1e-af6b-94891a98e0b4',
-      creationDate: '11/26/2023',
+      creationDate: '1978-07-14',
     },
     {
-      name: 'Vai ter filme e pizza sexta?',
+      message: 'Hey There',
       helloId: 'ad1708fa-937b-4c9e-b220-d22525aa8bb4',
-      creationDate: '2023-11-29',
+      creationDate: '2005-02-03',
     },
     {
-      name: 'Hey there from Postman',
+      message: 'Hi!!!',
       helloId: 'cd3fa4df-67a0-40ee-99b4-5b7a27b6f142',
-      creationDate: '11/26/2023',
+      creationDate: '2009-10-01',
     },
   ];
 
-  async create(hello: Partial<Hello>) {
+  async create(message: string) {
     const helloId = uuidv4();
-    const newHello = {
-      helloId,
-      ...hello,
-      creationDate: new Date().toLocaleDateString('en-ca'),
-      active: false,
-    } as Hello;
+    const creationDate = new Date().toLocaleDateString('en-ca');
+    const newHello = { helloId, message, creationDate } as Hello;
     await this.helloCollection.doc(helloId).set(newHello);
     return newHello;
   }
@@ -51,11 +47,11 @@ export class HelloService {
   async find() {
     const snapshot = await this.helloCollection.get();
     const hellos: Hello[] = [];
-    snapshot.forEach((doc) => hellos.push(doc.data()));
+    snapshot.forEach((doc) => hellos.push(doc.data() as Hello));
     return hellos;
   }
 
-  async findFake() {
+  findFake() {
     return this.fakeHellos;
   }
 

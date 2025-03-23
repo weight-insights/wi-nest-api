@@ -2,7 +2,7 @@ export class Hello {
   static collectionName = 'hello';
 
   helloId: string;
-  name: string;
+  message: string;
   creationDate: string;
 
   constructor(partial: Partial<Hello>) {
