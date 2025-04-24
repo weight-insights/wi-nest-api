@@ -1,20 +1,14 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Patch,
-  Post,
-  Request,
-  UseInterceptors,
+  Post
 } from '@nestjs/common';
 import { HelloService } from './hello.service';
 import { Public } from 'src/auth/public.decorator';
-import { CreateHelloDto } from './dtos/create-hello.dto';
-import { UpdateHelloDto } from './dtos/update-hello.dto';
-import { plainToInstance } from 'class-transformer';
 import { Hello } from './hello.entity';
 
 @Controller('hello')
@@ -23,39 +17,36 @@ export class HelloController {
 
   @Public()
   @Post()
-  async createHello(@Body() body: CreateHelloDto) {
-    const hello = await this.helloService.create(body);
-    return plainToInstance(Hello, hello);
+  async createHello(@Body() body: Partial<Hello>) {
+    const hello = await this.helloService.create(body.message);
+    return hello;
   }
 
   @Public()
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get('/:id')
   async findHello(@Param('id') id: string) {
     const hello = await this.helloService.findOne(id);
-    return plainToInstance(Hello, hello);
+    return hello;
   }
 
   @Public()
   @Get()
   async findAllHellos() {
     const hellos = await this.helloService.find();
-    return plainToInstance(Hello, hellos);
+    return hellos;
   }
 
   @Public()
   @Patch('/:id')
-  async updateWeight(@Param('id') id: string, @Body() body: UpdateHelloDto) {
+  async updateWeight(@Param('id') id: string, @Body() body: Partial<Hello>) {
     const hello = await this.helloService.update(id, body);
-    return plainToInstance(Hello, hello);
+    return hello;
   }
 
   @Public()
   @Delete('/:id')
-  async removeWeight(@Param('id') id: string, @Request() req) {
-    // console.log('userId', req.user.sub);
-    // console.log('email', req.user.username);
+  async removeWeight(@Param('id') id: string) {
     const hello = await this.helloService.remove(id);
-    return plainToInstance(Hello, hello);
+    return hello;
   }
 }

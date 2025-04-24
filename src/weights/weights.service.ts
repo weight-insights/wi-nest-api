@@ -1,77 +1,49 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Weight } from './weight.entity';
-import { CreateWeightDto } from './dtos/create-weight.dto';
-import { CollectionReference } from '@google-cloud/firestore';
-import { v4 as uuidv4 } from 'uuid';
-import { instanceToPlain } from 'class-transformer';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { MembersService } from 'src/members/members.service';
+import { WeightDto } from './weight.dto';
 
 @Injectable()
 export class WeightsService {
-  constructor(
-    @Inject(Weight.collectionName)
-    private weightsCollection: CollectionReference<Weight>,
-  ) {}
+  constructor(private membersService: MembersService) {}
 
-  async create(weight: CreateWeightDto) {
-    const weightId = uuidv4();
-    const newWeight = {
-      ...weight,
-      weightId,
-      date: new Date().toLocaleDateString('en-ca'),
-    };
-    await this.weightsCollection.doc(weightId).set(newWeight);
-    return newWeight;
+  async create(userId: string, weight: WeightDto): Promise<WeightDto> {
+    if (!weight.gameId || !weight.amount) {
+      throw new BadRequestException('gameId and amount are required');
+    }
+
+    const members = (await this.membersService.findByUserIdAndGameId(weight.gameId, userId));
+    if (!members.length) {
+      throw new NotFoundException('member not found');
+    }
+
+    const weightId = new Date().toLocaleDateString('en-ca');
+    const weights = members[0].weights ?? {};
+    weights[weightId] = weight.amount;
+    await this.membersService.update(members[0].memberId, { weights });
+
+    return ({ ...weight, weightId, memberId: members[0].memberId } as WeightDto);
   }
 
-  async find() {
-    const snapshot = await this.weightsCollection.get();
-    const weights: Weight[] = [];
-    snapshot.forEach((doc) => weights.push(doc.data()));
-    return weights;
-  }
+  async remove(userId: string, gameId: string, weightId: string): Promise<WeightDto> {
+    if (!gameId || !weightId) {
+      throw new BadRequestException('gameId and weightId are required');
+    }
 
-  async findOne(id: string) {
-    const weight = (await this.weightsCollection.doc(id).get())?.data();
-    if (!weight) {
+    const members = (await this.membersService.findByUserIdAndGameId(gameId, userId));
+    if (!members.length) {
+      throw new NotFoundException('member not found');
+    }
+
+    const oldAmount = members[0].weights ? members[0].weights[weightId] : undefined;
+
+    if (!oldAmount) {
       throw new NotFoundException('weight not found');
     }
-    return weight;
-  }
 
-  async findByMemberId(id: string) {
-    const snapshot = await this.weightsCollection
-      .where('memberId', '==', id)
-      .get();
-    const weights: Weight[] = [];
-    snapshot.forEach((doc) => weights.push(doc.data()));
-    return weights;
-  }
+    const weights = members[0].weights;
+    weights[weightId] = undefined;
 
-  async findByGameId(id: string): Promise<Weight[]> {
-    const snapshot = await this.weightsCollection
-      .where('gameId', '==', id)
-      .get();
-    const weights: Weight[] = [];
-    snapshot.forEach((doc) => weights.push(doc.data()));
-    return weights;
-  }
-
-  async update(id: string, attrs: Partial<Weight>) {
-    const weight = await this.findOne(id);
-    if (!weight) {
-      throw new NotFoundException('weight not found');
-    }
-    const updatedWeight = instanceToPlain(Object.assign(weight, attrs));
-    await this.weightsCollection.doc(id).update(updatedWeight);
-    return updatedWeight;
-  }
-
-  async remove(id: string) {
-    const weight = await this.findOne(id);
-    if (!weight) {
-      throw new NotFoundException('weight not found');
-    }
-    await this.weightsCollection.doc(id).delete();
-    return weight;
+    await this.membersService.update(members[0].memberId, { weights });
+    return { gameId, amount: oldAmount, memberId: members[0].memberId, weightId };
   }
 }

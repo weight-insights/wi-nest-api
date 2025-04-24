@@ -7,7 +7,9 @@ import {
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { UserDto } from 'src/users/user.dto';
+import { AccessToken } from './auth.dto';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +18,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(user: CreateUserDto) {
+  async signUp(user: Partial<User>): Promise<UserDto> {
+    if (!user.email || !user.password) {
+      throw new BadRequestException('email and password are required');
+    }
     // See if email is in use
-    const existingUsers = await this.usersService.findByEmail(user.email);
-    if (existingUsers.length > 0) {
+    const existingUser = await this.usersService.findByEmail(user.email);
+    if (existingUser) {
       throw new BadRequestException('email in use');
     }
     // Generate a salt and hash the salt and the password together
@@ -27,22 +32,22 @@ export class AuthService {
     const hash = await bcrypt.hash(user.password, salt);
     // Create a new user and save it
     user.password = hash;
-    const newUser = this.usersService.create(user);
+    const newUser = this.usersService.create(user as User);
     // return the user
     return newUser;
   }
 
-  async signIn(email: string, password: string) {
-    const users = await this.usersService.findByEmail(email);
-    if (users.length === 0) {
+  async signIn(email: string, password: string): Promise<AccessToken> {
+    const user = await this.usersService.findByEmailForSingIn(email);
+    if (!user) {
       throw new NotFoundException('user not found');
     }
-    const isMatch = await bcrypt.compare(password, users[0].password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: users[0].userId, username: users[0].email };
-    const access_token = await this.jwtService.signAsync(payload);
-    return { access_token };
+    const payload = { sub: user.id, username: email };
+    const accessToken = await this.jwtService.signAsync(payload);
+    return ({ accessToken } as AccessToken);
   }
 }

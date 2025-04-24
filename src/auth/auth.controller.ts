@@ -1,19 +1,15 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Post,
-  Request,
-  UseInterceptors,
+  Request
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignInDto } from './dtos/sign-in.dto';
 import { Public } from './public.decorator';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
-import { plainToInstance } from 'class-transformer';
+import { UserDto } from 'src/users/user.dto';
 import { User } from 'src/users/user.entity';
 
 @Controller('api/v1/auth')
@@ -21,17 +17,16 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('/sign-up')
-  async singUp(@Body() body: CreateUserDto) {
+  async singUp(@Body() body: UserDto) {
     const user = await this.authService.signUp(body);
-    return plainToInstance(User, user);
+    return user;
   }
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('/sign-in')
-  async singIn(@Body() body: SignInDto) {
+  async singIn(@Body() body: Partial<User>) {
     const accessToken = await this.authService.signIn(
       body.email,
       body.password,
