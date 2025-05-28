@@ -15,7 +15,9 @@ export class WeightsService {
     if (!members.length) {
       throw new NotFoundException('member not found');
     }
-
+    
+    //i love java hehe 
+    
     const weightId = new Date().toLocaleDateString('en-ca');
     const weights = members[0].weights ?? {};
     weights[weightId] = weight.amount;
