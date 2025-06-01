@@ -23,8 +23,8 @@ export class AuthService {
       throw new BadRequestException('email and password are required');
     }
     // See if email is in use
-    const existingUser = await this.usersService.findByEmail(user.email);
-    if (existingUser) {
+    const userExists = await this.usersService.findIfUserExistsByEmail(user.email);
+    if (userExists) {
       throw new BadRequestException('email in use');
     }
     // Generate a salt and hash the salt and the password together

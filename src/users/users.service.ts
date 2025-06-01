@@ -59,6 +59,14 @@ export class UsersService {
     return users[0];
   }
 
+  async findIfUserExistsByEmail(email: string): Promise<boolean> {
+    const snapshot = await this.usersCollection
+      .where('email', '==', email)
+      .get();
+    
+    return !snapshot.empty;
+  }
+
   async update(id: string, attrs: Partial<User>): Promise<UserDto> {
     if (attrs.password) {
       throw new BadRequestException('no password update in this method');
