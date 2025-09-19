@@ -2,12 +2,14 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { Game } from './game.entity';
 import { CollectionReference } from '@google-cloud/firestore';
 import { GameDto } from './game.dto';
+import { MembersService } from 'src/members/members.service';
 
 @Injectable()
 export class GamesService {
   constructor(
     @Inject(Game.collectionName)
     private gamesCollection: CollectionReference<Game>,
+    private membersService: MembersService
   ) {}
 
   async create(game: Partial<Game>, adminId: string): Promise<GameDto> {
@@ -46,6 +48,25 @@ export class GamesService {
     }
     return this.parseGameEntityToDto(doc);
   }
+
+  async findUsersGames(userId: string): Promise<GameDto[]> {
+    const gameIds = await this.membersService.findGamesIdsByUserId(userId);
+    const games: GameDto[] = [];
+    for (const gameId of gameIds) {
+      const game = await this.findOne(gameId);
+      games.push(game);
+    }
+    return games;
+  }
+
+  /*async findByUserIdAndGameId(gameId: string, userId: string): Promise<MemberDto[]> {
+    const snapshot = await this.membersCollection
+        .where('gameId', '==', gameId)
+        .where('userId', '==', userId)
+        .get();
+      const members: MemberDto[] = [];
+      snapshot.forEach((doc) => members.push(this.parseMemberEntityToDto(doc)));
+      return members;*/
 
   async update(id: string, attrs: Partial<Game>): Promise<GameDto> {
     const game = await this.findOne(id);

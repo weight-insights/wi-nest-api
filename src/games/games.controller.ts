@@ -28,9 +28,15 @@ export class GamesController {
     return game;
   }
 
-  @Get()
+ @Get('/dev')
   async findAllGames() {
     const games = await this.gamesService.find();
+    return games;
+  }
+
+  @Get()
+  async findAllUsersGames(@Request() req) {
+    const games = await this.gamesService.findUsersGames(req.user.sub);
     return games;
   }
 
@@ -50,4 +56,6 @@ export class GamesController {
     const game = await this.gamesService.remove(id);
     return game;
   }
+
+
 }

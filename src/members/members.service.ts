@@ -63,6 +63,16 @@ export class MembersService {
     return members;
   }
 
+  async findGamesIdsByUserId(userId: string): Promise<string[]> {
+    const snapshot = await this.membersCollection
+      .where('userId', '==', userId)
+      .get();
+      const gameIds: string[] = [];
+      snapshot.forEach((doc) => gameIds.push(doc.data().gameId));
+
+    return gameIds;
+  }
+
   async update(id: string, attrs: Partial<Member>): Promise<Member> {
     const member = await this.findOne(id);
     if (!member) {
@@ -85,7 +95,7 @@ export class MembersService {
   private parseMemberEntityToDto(doc: { id: string; data: () => Member; }): MemberDto {
       const memberDto = {
         ...doc.data(),
-        gameId: doc.id
+        memberId: doc.id
       } as MemberDto;
       return memberDto;
     }
