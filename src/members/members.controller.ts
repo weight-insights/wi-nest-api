@@ -10,15 +10,15 @@ import {
 } from '@nestjs/common';
 import { MembersService } from './members.service';
 import { Member } from './member.entity';
+import { MemberCreateDto } from './memberCreate.dto';
 
 @Controller('api/v1/members')
 export class MembersController {
   constructor(private membersService: MembersService) {}
 
   @Post()
-  async createMember(@Body() body: Partial<Member>, @Request() req) {
-    const userId = req.user.sub;
-    const member = await this.membersService.create(body, userId);
+  async createMember(@Body() body: MemberCreateDto) {
+    const member = await this.membersService.create(body.gameId, body.email);
     return member;
   }
 
