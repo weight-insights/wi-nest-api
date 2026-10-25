@@ -2,19 +2,22 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { Member } from './member.entity';
 import { CollectionReference } from '@google-cloud/firestore';
 import { MemberDto } from './member.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class MembersService {
   constructor(
     @Inject(Member.collectionName)
     private membersCollection: CollectionReference<Member>,
+    private usersService: UsersService
   ) {}
 
-  async create(member: Partial<Member>, userId: string): Promise<MemberDto> {
-    if (!member.gameId || !member.name || !member.weightGoal) {
+  async create(gameId: string, email: string): Promise<MemberDto> {
+    if (!gameId || !email) {
       throw new BadRequestException('missing fields');
     }
-    member.userId = member.userId ?? userId;
+    const user = await this.usersService.findByEmail(email);
+    const member = {userId: user.userId, gameId, name: user.name}; 
     const res = await this.membersCollection.add(member as Member);
     const newMember = { ...member, memberId: res.id } as MemberDto;
     return newMember;
@@ -63,6 +66,16 @@ export class MembersService {
     return members;
   }
 
+  async findGamesIdsByUserId(userId: string): Promise<string[]> {
+    const snapshot = await this.membersCollection
+      .where('userId', '==', userId)
+      .get();
+      const gameIds: string[] = [];
+      snapshot.forEach((doc) => gameIds.push(doc.data().gameId));
+
+    return gameIds;
+  }
+
   async update(id: string, attrs: Partial<Member>): Promise<Member> {
     const member = await this.findOne(id);
     if (!member) {
@@ -85,7 +98,7 @@ export class MembersService {
   private parseMemberEntityToDto(doc: { id: string; data: () => Member; }): MemberDto {
       const memberDto = {
         ...doc.data(),
-        gameId: doc.id
+        memberId: doc.id
       } as MemberDto;
       return memberDto;
     }
